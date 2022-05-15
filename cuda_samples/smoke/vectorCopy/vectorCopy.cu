@@ -156,10 +156,11 @@ int main(int argc, char* argv[])
     }
 
     if (fail) {
-        fprintf(stderr, "Result verification failed at element\n");
+        printf("Test FAILED, Result verification failed at element\n");
     } else {
         printf("Test PASSED\n");
     }
+    err = cudaMemcpy(h_C, d_C, size, cudaMemcpyDeviceToHost);
 #endif
     free(h_A);
     free(h_A_from_d);

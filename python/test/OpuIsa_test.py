@@ -38,12 +38,12 @@ class Test_OpuIsa:
   # simulator and runs test. We can overwrite this function when
   # inheriting from the test class to apply different passes to the DUT.
   def run_sim(self, th, name, gen_test):
-    pdb.set_trace()
+    #pdb.set_trace()
     #th.elaborate()
     # Assemble the program
     kname = "kernel_{}".format(name)
     th.assemble(kname, gen_test())
-    th.run(kname)
+    return th.run(kname)
 
     # Load the program into memory
     #th.load(mem_image )
@@ -59,6 +59,7 @@ class Test_OpuIsa:
   ])
   def test_add(self, name, test):
     th = TestHarness()
-    self.run_sim(th, name, test)
+    result = self.run_sim(th, name, test)
+    assert result == True
 
 

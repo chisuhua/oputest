@@ -80,8 +80,20 @@ class TestHarness:
       f.writelines("PREDEFINE_COASM={} {}".format(kname, host_execute))
     #pdb.set_trace()
     #subprocess.run(host_execute, env=env)
-    subprocess.run(['chmod', '+x', "run_{}.sh".format(kname)])
-    subprocess.run(os.path.join(cwd, "run_{}.sh".format(kname)))
+    test_cmd = os.path.join(cwd, "run_{}.sh".format(kname))
+    os.system("chmod +x {}".format(test_cmd))
+    test_pass = False
+    #pdb.set_trace()
+    with os.popen(test_cmd, 'r') as p:
+        r = p.read()
+        if r.find("PASSED") > 0:
+            #pdb.set_trace()
+            test_pass = True
+        #test_pass = True
+    return test_pass
+    #pdb.set_trace()
+    #with open("{}.log".format(kname), 'w') as f:
+    #    subprocess.Popen(['sh', run_test], stdout=f)
     #pass
     # Iterate over the sections
     #sections = mem_image.get_sections()

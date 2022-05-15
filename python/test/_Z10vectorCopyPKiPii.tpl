@@ -29,7 +29,7 @@ bb_04:
 		v_add_i64	v[24:25],	v[5:6],	v[22:23]
 		v_store_u32	v19,	v[24:25] % mspace:flat
 bb_exit:
-		s_exit
+		t_exit
 
 ---
 opu.kernels:
