@@ -133,7 +133,7 @@ int MatrixMultiply(int argc, char **argv,
     cudaStream_t stream;
 
     // Initialize host memory
-    const float valB = 0.01f;
+    const float valB = 0.5f;
     ConstantInit(h_A, size_A, 1.0f);
     ConstantInit(h_B, size_B, valB);
 
@@ -292,8 +292,8 @@ int main(int argc, char **argv) {
 
     int block_size = 16;
 
-    dim3 dimsA(1 * block_size, 1 * block_size, 1);
-    dim3 dimsB(1 * block_size, 1 * block_size, 1);
+    dim3 dimsA(2 * block_size, 2 * block_size, 1);
+    dim3 dimsB(1 * block_size, 2 * block_size, 1);
 
     // width of Matrix A
     if (checkCmdLineFlag(argc, (const char **)argv, "wA")) {

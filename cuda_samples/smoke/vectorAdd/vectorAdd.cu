@@ -24,7 +24,22 @@
 
 #include <helper_cuda.h>
 
+#include <iostream>
+#include <random>
+#include <ctime>
+using namespace std;
+
+//#define TYPE float
+#define TYPE_FLOAT 1
+
+#if TYPE_FLOAT
 #define TYPE float
+#else
+#define TYPE int
+#endif
+
+template <class RealType = double>
+class uniform_real_distribution;
 
 
 extern "C" void debug_hook()
@@ -59,8 +74,8 @@ main(void)
     cudaError_t err = cudaSuccess;
 
     // Print the vector length to be used, and compute its size
-    int numElements = 5000;
-    // int numElements = 32;
+    // int numElements = 5000;
+    int numElements = 32;
     size_t size = numElements * sizeof(float);
     printf("[Vector addition of %d elements]\n", numElements);
 
@@ -79,12 +94,16 @@ main(void)
         fprintf(stderr, "Failed to allocate host vectors!\n");
         exit(EXIT_FAILURE);
     }
-#if TYPE == float
+#if TYPE_FLOAT
+    normal_distribution<float> u(10, 2);
+    default_random_engine e(time(nullptr));
     // Initialize the host input vectors
     for (int i = 0; i < numElements; ++i)
     {
-        h_A[i] = rand()/(float)RAND_MAX;
-        h_B[i] = rand()/(float)RAND_MAX;
+        // h_A[i] = rand()/(float)RAND_MAX;
+        // h_B[i] = rand()/(float)RAND_MAX;
+        h_A[i] = u(e);
+        h_B[i] = u(e);
     }
 #else
     for (int i = 0; i < numElements; ++i)
@@ -170,9 +189,13 @@ main(void)
     // Verify that the result vector is correct
     for (int i = 0; i < numElements; ++i)
     {
+#if TYPE_FLOAT
         if (fabs(h_A[i] + h_B[i] - h_C[i]) > 1e-5)
+#else
+        if (h_A[i] + h_B[i] != h_C[i])
+#endif
         {
-            fprintf(stderr, "Result verification failed at element %d!\n", i);
+            fprintf(stderr, "Result verification failed at element %d!, expect %d, get %x\n", i, h_A[i] + h_B[i], h_C[i]);
             exit(EXIT_FAILURE);
         }
     }

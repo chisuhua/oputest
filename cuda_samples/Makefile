@@ -37,7 +37,8 @@ TARGET_ARCH ?= $(shell uname -m)
 
 # Project folders that contain CUDA samples
 #PROJECTS ?= $(shell find 0_Simple 1_Utilities 2_Graphics 3_Imaging 4_Finance 5_Simulations 6_Advanced 7_CUDALibraries -name Makefile)
-PROJECTS ?= $(shell find smoke 0_Simple -name Makefile)
+#PROJECTS ?= $(shell find smoke 0_Simple -name Makefile)
+PROJECTS ?= $(shell find smoke -name Makefile)
 
 FILTER_OUT :=
 
